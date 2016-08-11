@@ -5,16 +5,78 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/colorPrimaryDark">
+
+        <ImageView
+            android:id="@+id/image_share"
+            android:src="@mipmap/title_share"
+            android:padding="2dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/view_horizontal_margin"
+            android:layout_width="28dp"
+            android:layout_height="28dp" />
+
+
+
+        <ImageView
+            android:id="@+id/image_add"
+            android:src="@mipmap/title_add"
+            android:padding="2dp"
+            android:layout_toLeftOf="@+id/image_share"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="22dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp" />
+
+
+        <TextView
+            android:id="@+id/title"
+            android:text="Example"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </RelativeLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/example" />
+        <TextView
+            android:id="@+id/start"
+            android:text="start"
+            android:textColor="#fff"
+            android:textSize="16sp"
+            android:layout_gravity="bottom|right"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+
+
+
     <LinearLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <!--<ImageView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:adjustViewBounds="true"-->
-            <!--android:src="@mipmap/tianqinse" />-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:adjustViewBounds="true"-->
+        <!--android:src="@mipmap/tianqinse" />-->
 
         <Button
             android:id="@+id/one"
