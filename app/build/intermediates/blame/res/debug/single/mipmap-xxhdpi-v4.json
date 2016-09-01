@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/Users/wuliao/Code/WorkSpace/spotlight/app/build/intermediates/res/merged/debug/mipmap-xxhdpi-v4/title_add.png",
+        "source": "/Users/wuliao/Code/WorkSpace/spotlight/app/src/main/res/mipmap-xxhdpi/title_add.png"
+    },
+    {
+        "merged": "/Users/wuliao/Code/WorkSpace/spotlight/app/build/intermediates/res/merged/debug/mipmap-xxhdpi-v4/example.jpg",
+        "source": "/Users/wuliao/Code/WorkSpace/spotlight/app/src/main/res/mipmap-xxhdpi/example.jpg"
+    },
+    {
+        "merged": "/Users/wuliao/Code/WorkSpace/spotlight/app/build/intermediates/res/merged/debug/mipmap-xxhdpi-v4/title_share.png",
+        "source": "/Users/wuliao/Code/WorkSpace/spotlight/app/src/main/res/mipmap-xxhdpi/title_share.png"
+    },
+    {
+        "merged": "/Users/wuliao/Code/WorkSpace/spotlight/app/build/intermediates/res/merged/debug/mipmap-xxhdpi-v4/ic_launcher.png",
+        "source": "/Users/wuliao/Code/WorkSpace/spotlight/app/src/main/res/mipmap-xxhdpi/ic_launcher.png"
+    }
+]

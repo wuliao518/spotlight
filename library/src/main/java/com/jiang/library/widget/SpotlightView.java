@@ -18,7 +18,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -36,10 +35,8 @@ import java.util.List;
  */
 
 public class SpotlightView extends FrameLayout {
-    //是否开启动画
-    private boolean isAnimation = true;
+    private boolean isAnimation;
 
-    private int position = 0;
     private RectF currentRectF = new RectF(0, 0, 200, 200);
     private float currentRadius;
     private Paint mPaint;
@@ -73,17 +70,19 @@ public class SpotlightView extends FrameLayout {
         return builder;
     }
 
-    public enum Direction {
-        TOP, //上方
-        LEFT, //下方
-        RIGHT, //右边
-        BOTTOM, //底部
-        PARENT_LEFT_TOP, //左顶点
-        PARENT_LEFT_BOTTOM, //左下角
-        PARENT_RIGHT_TOP, //右顶点
-        PARENT_RIGHT_BOTTOM,//右下角
-        CENTER
-    }
+    public static int TOP = 0x0001;//在targetView之上
+    public static int LEFT = 0x0002;//在targetView之左
+    public static int RIGHT = 0x0004;//在targetView之右
+    public static int BOTTOM = 0x0008;//在targetView之下
+    public static final int CENTER_VERTICAL = 0x0010;//在targetView竖直居中
+    public static final int CENTER_HORIZONTAL = 0x0020;//在targetView水平居中
+
+
+    public static int PARENT_TOP = 0x0040;
+    public static int PARENT_LEFT = 0x0080;
+    public static int PARENT_RIGHT = 0x0100;
+    public static int PARENT_BOTTOM = 0x0200;
+    public static int PARENT_CENTER = CENTER_VERTICAL | CENTER_HORIZONTAL;
 
     public enum Shape {
         CIRCLE,
@@ -114,14 +113,8 @@ public class SpotlightView extends FrameLayout {
     }
 
 
-    private void prepare() {
-        ViewGroup.LayoutParams guideParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-        final ViewGroup contentView = (ViewGroup) activity.getWindow().getDecorView();
+    public void prepare() {
 
-        if (getParent() == null) {
-            contentView.addView(SpotlightView.this, guideParams);
-        }
         int size = spotlights.size();
         for (int i = 0; i < size; i++) {
             final Spotlight model = spotlights.get(i);
@@ -177,7 +170,9 @@ public class SpotlightView extends FrameLayout {
                             public void onAnimationEnd(Animator animation) {
                                 super.onAnimationEnd(animation);
                                 removeView(model.getShowView());
-                                addView(nextModel.getShowView(), nextModel.getParams());
+                                if (nextModel.getShowView().getParent() == null) {
+                                    addView(nextModel.getShowView(), nextModel.getParams());
+                                }
                                 setOnClickListener(nextModel.getListener());
                             }
                         });
@@ -192,14 +187,20 @@ public class SpotlightView extends FrameLayout {
                     }
                 });
             } else {//last one
-                Log.e("jiang", "last one");
                 model.setHideAnimator(getHideAnimator(model));
                 model.setListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        model.getHideAnimator().start();
-                        removeAllViews();
-                        clearGuide();
+                        Animator animator = model.getHideAnimator();
+                        animator.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                removeAllViews();
+                                clearGuide();
+                            }
+                        });
+                        animator.start();
                     }
                 });
             }
@@ -209,7 +210,14 @@ public class SpotlightView extends FrameLayout {
     }
 
     public void start() {
-        prepare();
+        ViewGroup.LayoutParams guideParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        final ViewGroup contentView = (ViewGroup) activity.getWindow().getDecorView();
+
+        if (getParent() == null) {
+            contentView.addView(SpotlightView.this, guideParams);
+        }
+
 
         final Spotlight model = spotlights.get(0);
         Animator begin = model.getShowAnimator();
@@ -218,21 +226,23 @@ public class SpotlightView extends FrameLayout {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                addView(model.getShowView(), model.getParams());
+                if (model.getShowView().getParent() == null) {
+                    addView(model.getShowView(), model.getParams());
+                }
             }
         });
 
-        Animator end = null;
-        if (position > 0) {
-            end = spotlights.get(position - 1).getHideAnimator();
-        }
-        if (end != null) {
-            AnimatorSet animSet = new AnimatorSet();
-            animSet.play(end).before(begin);
-            animSet.start();
-        } else {
+//        Animator end = null;
+//        if (position > 0) {
+//            end = spotlights.get(position - 1).getHideAnimator();
+//        }
+//        if (end != null) {
+//            AnimatorSet animSet = new AnimatorSet();
+//            animSet.play(end).before(begin);
+//            animSet.start();
+//        } else {
             begin.start();
-        }
+//        }
 
 
     }
@@ -247,7 +257,8 @@ public class SpotlightView extends FrameLayout {
 
     public class Builder {
 
-        Direction direction = Direction.BOTTOM;
+        int direction = BOTTOM | CENTER_HORIZONTAL;
+
         private Spotlight spotlight;
         private View targetView;
         private View showView;
@@ -257,7 +268,7 @@ public class SpotlightView extends FrameLayout {
         private float padding = 6;
         private Shape shape = Shape.RECT;
 
-        public void build() {
+        public void build(final int position) {
             targetView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
@@ -270,43 +281,39 @@ public class SpotlightView extends FrameLayout {
                     int height = DisplayUtil.getInstance().getViewMeasuredHeight(showView);
 
                     LayoutParams params = new LayoutParams(width, height);
-                    switch (direction) {
-                        case TOP://在target之上
+
+                    while (direction > 0) {
+                        if ((direction & TOP) > 0) {
                             params.topMargin = location[1] - height - topMargin;
-                            params.leftMargin = location[0] + leftMargin;
-                            break;
-                        case BOTTOM:
-                            params.topMargin = location[1] + targetHeight + topMargin;
-                            params.leftMargin = location[0] + leftMargin;
-                            break;
-                        case LEFT:
-                            params.topMargin = location[1] - topMargin;
+                            direction = direction ^ TOP;
+                        } else if ((direction & LEFT) > 0) {
                             params.leftMargin = location[0] - width - leftMargin;
-                            break;
-                        case RIGHT:
-                            params.topMargin = location[1] - topMargin;
+                            direction = direction ^ LEFT;
+                        } else if ((direction & RIGHT) > 0) {
                             params.leftMargin = location[0] + targetWidth + leftMargin;
-                            break;
-                        case PARENT_LEFT_TOP:
-                            params.topMargin = location[1] + topMargin;
-                            params.leftMargin = location[0] + leftMargin;
-                            break;
-                        case PARENT_LEFT_BOTTOM:
-                            params.topMargin = location[1] + targetHeight - height - topMargin;
-                            params.leftMargin = location[0] + leftMargin;
-                            break;
-                        case PARENT_RIGHT_TOP:
-                            params.topMargin = location[1] + topMargin;
-                            params.leftMargin = location[0] + targetWidth - width + leftMargin;
-                            break;
-                        case PARENT_RIGHT_BOTTOM:
-                            params.topMargin = location[1] + targetHeight - height + topMargin;
-                            params.leftMargin = location[0] + targetWidth - width - leftMargin;
-                            break;
-                        case CENTER:
-                            params.topMargin = location[1] + (targetHeight - height) / 2 + topMargin;
+                            direction = direction ^ RIGHT;
+                        } else if ((direction & BOTTOM) > 0) {
+                            params.topMargin = location[1] + targetHeight + topMargin;
+                            direction = direction ^ BOTTOM;
+                        } else if ((direction & CENTER_HORIZONTAL) > 0) {
                             params.leftMargin = location[0] + (targetWidth - width) / 2 + leftMargin;
-                            break;
+                            direction = direction ^ CENTER_HORIZONTAL;
+                        } else if ((direction & CENTER_VERTICAL) > 0) {
+                            params.topMargin = location[1] + (targetHeight - height) / 2 + topMargin;
+                            direction = direction ^ CENTER_VERTICAL;
+                        } else if ((direction & PARENT_TOP) > 0) {
+                            params.topMargin = location[1] + topMargin;
+                            direction = direction ^ PARENT_TOP;
+                        } else if ((direction & PARENT_LEFT) > 0) {
+                            params.leftMargin = location[0] + leftMargin;
+                            direction = direction ^ PARENT_LEFT;
+                        } else if ((direction & PARENT_RIGHT) > 0) {
+                            params.leftMargin = location[0] + targetWidth - width - leftMargin;
+                            direction = direction ^ PARENT_RIGHT;
+                        } else if ((direction & PARENT_BOTTOM) > 0) {
+                            params.topMargin = location[1] + targetHeight - height + topMargin;
+                            direction = direction ^ PARENT_BOTTOM;
+                        }
                     }
 
                     RectF rectF;
@@ -323,7 +330,11 @@ public class SpotlightView extends FrameLayout {
                     Spotlight light = new Spotlight(rectF, radius);
                     light.setParams(params);
                     light.setShowView(showView);
-                    spotlights.add(light);
+                    if (position > spotlights.size()) {
+                        spotlights.add(light);
+                    } else {
+                        spotlights.add(position, light);
+                    }
 
                     targetView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 }
@@ -343,7 +354,7 @@ public class SpotlightView extends FrameLayout {
             this.spotlight = spotlight;
         }
 
-        public Builder setDirection(Direction direction) {
+        public Builder setDirection(int direction) {
             this.direction = direction;
             return this;
         }
@@ -384,6 +395,7 @@ public class SpotlightView extends FrameLayout {
             this.radius = radius;
             return this;
         }
+
     }
 
 

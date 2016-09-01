@@ -25,32 +25,32 @@ public class MainActivity extends AppCompatActivity {
         TextView text = new TextView(getApplication());
         text.setText("Appear spotlight on view");
         text.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+
         spotlightView.addGuideView(MainActivity.this, imageShare)
                 .setShowView(text)
-                .setDirection(SpotlightView.Direction.BOTTOM)
+                .setDirection(SpotlightView.BOTTOM|SpotlightView.LEFT)
                 .setShape(SpotlightView.Shape.CIRCLE)
-                .setLeftMargin(-240)
+                .setLeftMargin(-60)
                 .setTopMargin(24)
-                .setPadding(18)
+                .setPadding(16)
                 .build(0);
 
 
         spotlightView.addGuideView(MainActivity.this, imageAdd)
                 .setShowView(text)
-                .setDirection(SpotlightView.Direction.BOTTOM)
+                .setDirection(SpotlightView.BOTTOM|SpotlightView.CENTER_HORIZONTAL)
                 .setShape(SpotlightView.Shape.CIRCLE)
-                .setLeftMargin(-240)
+                .setLeftMargin(-40)
                 .setTopMargin(24)
-                .setPadding(18)
+                .setPadding(10)
                 .build(1);
 
 
         spotlightView.addGuideView(MainActivity.this, title)
                 .setShowView(text)
-                .setDirection(SpotlightView.Direction.BOTTOM)
+                .setDirection(SpotlightView.BOTTOM|SpotlightView.CENTER_HORIZONTAL)
                 .setShape(SpotlightView.Shape.RECT)
                 .setTopMargin(24)
-                .setLeftMargin(-40)
                 .setPadding(18)
                 .setRadius(10)
                 .build(2);
@@ -61,27 +61,21 @@ public class MainActivity extends AppCompatActivity {
         gecco.setTextSize(48);
         gecco.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
 
-        spotlightView.addGuideView(MainActivity.this, findViewById(android.R.id.content))
+        spotlightView.addGuideView(MainActivity.this, findViewById(R.id.example))
                 .setShowView(gecco)
-                .setDirection(SpotlightView.Direction.CENTER)
+                .setDirection(SpotlightView.PARENT_CENTER)
                 .setShape(SpotlightView.Shape.CIRCLE)
-                .setPadding(-400)
+                .setPadding(-340)
                 .setRadius(10)
                 .build(3);
-
-//        Button one = (Button) findViewById(R.id.one);
-//        Button two = (Button) findViewById(R.id.two);
-//        Button three = (Button) findViewById(R.id.three);
 
 
         findViewById(R.id.start).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 spotlightView.start();
             }
         });
-
 
 //        spotlightView.addGuideView(MainActivity.this, one)
 //                .setShowView(R.mipmap.ic_launcher)
