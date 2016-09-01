@@ -22,33 +22,42 @@ public class MainActivity extends AppCompatActivity {
         final ImageView imageShare = (ImageView) findViewById(R.id.image_share);
 
         final SpotlightView spotlightView = new SpotlightView(getApplication());
-        TextView text = new TextView(getApplication());
-        text.setText("Appear spotlight on view");
-        text.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+        TextView oneText = new TextView(getApplication());
+        oneText.setText("This Icon For Share");
+        oneText.setTextSize(16);
+        oneText.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
 
         spotlightView.addGuideView(MainActivity.this, imageShare)
-                .setShowView(text)
-                .setDirection(SpotlightView.BOTTOM|SpotlightView.LEFT)
+                .setShowView(oneText)
+                .setDirection(SpotlightView.BOTTOM | SpotlightView.LEFT)
                 .setShape(SpotlightView.Shape.CIRCLE)
                 .setLeftMargin(-60)
                 .setTopMargin(24)
                 .setPadding(16)
                 .build(0);
 
+        TextView twoText = new TextView(getApplication());
+        twoText.setText("This Icon For Add");
+        twoText.setTextSize(16);
+        twoText.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
 
         spotlightView.addGuideView(MainActivity.this, imageAdd)
-                .setShowView(text)
-                .setDirection(SpotlightView.BOTTOM|SpotlightView.CENTER_HORIZONTAL)
+                .setShowView(twoText)
+                .setDirection(SpotlightView.BOTTOM | SpotlightView.CENTER_HORIZONTAL)
                 .setShape(SpotlightView.Shape.CIRCLE)
                 .setLeftMargin(-40)
                 .setTopMargin(24)
-                .setPadding(10)
+                .setPadding(16)
                 .build(1);
 
+        TextView threeText = new TextView(getApplication());
+        threeText.setText("This Is Title");
+        threeText.setTextSize(16);
+        threeText.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
 
         spotlightView.addGuideView(MainActivity.this, title)
-                .setShowView(text)
-                .setDirection(SpotlightView.BOTTOM|SpotlightView.CENTER_HORIZONTAL)
+                .setShowView(threeText)
+                .setDirection(SpotlightView.BOTTOM | SpotlightView.CENTER_HORIZONTAL)
                 .setShape(SpotlightView.Shape.RECT)
                 .setTopMargin(24)
                 .setPadding(18)
@@ -56,16 +65,16 @@ public class MainActivity extends AppCompatActivity {
                 .build(2);
 
 
-        TextView gecco = new TextView(getApplication());
-        gecco.setText("Gecco");
-        gecco.setTextSize(48);
-        gecco.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+        TextView fourText = new TextView(getApplication());
+        fourText.setText("That Is All");
+        fourText.setTextSize(42);
+        fourText.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
 
         spotlightView.addGuideView(MainActivity.this, findViewById(R.id.example))
-                .setShowView(gecco)
+                .setShowView(fourText)
                 .setDirection(SpotlightView.PARENT_CENTER)
                 .setShape(SpotlightView.Shape.CIRCLE)
-                .setPadding(-340)
+                .setPadding(-1 * DisplayUtil.getInstance().dp2px(getApplication(), 180))
                 .setRadius(10)
                 .build(3);
 
@@ -77,34 +86,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        spotlightView.addGuideView(MainActivity.this, one)
-//                .setShowView(R.mipmap.ic_launcher)
-//                .setDirection(SpotlightView.Direction.RIGHT)
-//                .setShape(SpotlightView.Shape.CIRCLE)
-//                .setLeftMargin(10)
-//                .setPadding(0)
-//                .build();
-//
-//        TextView text = new TextView(getApplication());
-//        text.setText("我好想你啊！！");
-//        text.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
-//                FrameLayout.LayoutParams.WRAP_CONTENT));
-//
-//        spotlightView.addGuideView(MainActivity.this, two)
-//                .setShowView(text)
-//                .setDirection(SpotlightView.Direction.RIGHT)
-//                .setLeftMargin(10)
-//                .setRadius(10)
-//                .setPadding(0)
-//                .build();
-//
-//        spotlightView.addGuideView(MainActivity.this, three)
-//                .setShowView(R.mipmap.ic_launcher)
-//                .setDirection(SpotlightView.Direction.RIGHT)
-//                .setLeftMargin(10)
-//                .setRadius(10)
-//                .setPadding(0)
-//                .build();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
