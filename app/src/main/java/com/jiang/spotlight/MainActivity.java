@@ -27,6 +27,10 @@ public class MainActivity extends AppCompatActivity {
         oneText.setTextSize(16);
         oneText.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
 
+
+        //1、自定义动画
+        //2、控制遮罩层Mask移动
+        //3、动画期间不允许点击
         spotlightView.addGuideView(MainActivity.this, imageShare)
                 .setShowView(oneText)
                 .setDirection(SpotlightView.BOTTOM | SpotlightView.LEFT)
@@ -67,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         TextView fourText = new TextView(getApplication());
         fourText.setText("That Is All");
-        fourText.setTextSize(42);
+        fourText.setTextSize(36);
         fourText.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
 
         spotlightView.addGuideView(MainActivity.this, findViewById(R.id.example))
