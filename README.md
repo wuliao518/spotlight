@@ -1,5 +1,7 @@
 # spotlight
 模仿Gecco[https://github.com/yukiasai/Gecco]
+
+![](/art/demo.gif)
 ```java
 Button one = (Button) findViewById(R.id.one);
 Button two = (Button) findViewById(R.id.two);
