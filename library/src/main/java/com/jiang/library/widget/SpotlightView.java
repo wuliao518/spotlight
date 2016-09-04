@@ -41,33 +41,10 @@ public class SpotlightView extends FrameLayout {
     //the mask
     private Bitmap mMaskBitmap;
 
-    public SpotlightView(Context context) {
-        this(context, null);
-    }
-
-    public SpotlightView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public SpotlightView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
-
     private List<Spotlight> mSpotlights;
     private Builder mBuilder;
     private Activity mActivity;
     private int mDurationTime = 300;
-
-    public Builder addGuideView(Activity activity, final View targetView) {
-        this.mActivity = activity;
-        if (targetView == null) {
-            throw new IllegalArgumentException("targetView can not be null");
-        }
-        mBuilder = new Builder(targetView);
-        return mBuilder;
-    }
-
     public static int TOP = 0x0001;
     public static int LEFT = 0x0002;
     public static int RIGHT = 0x0004;
@@ -91,11 +68,33 @@ public class SpotlightView extends FrameLayout {
         RECT
     }
 
+    public SpotlightView(Context context) {
+        this(context, null);
+    }
+
+    public SpotlightView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public SpotlightView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
+    }
+
     private void init() {
         mPaint = new Paint();
         mPaint.setDither(true);
         mPaint.setAntiAlias(true);
         mSpotlights = new ArrayList<>();
+    }
+
+    public Builder addGuideView(Activity activity, final View targetView) {
+        this.mActivity = activity;
+        if (targetView == null) {
+            throw new IllegalArgumentException("targetView can not be null");
+        }
+        mBuilder = new Builder(targetView);
+        return mBuilder;
     }
 
     private int mMaskColor = 0x77000000;
@@ -119,8 +118,10 @@ public class SpotlightView extends FrameLayout {
         super.dispatchDraw(canvas);
     }
 
+    private boolean mIsPrepare;
 
     public void prepare() {
+        mIsPrepare = true;
         int size = mSpotlights.size();
         for (int i = 0; i < size; i++) {
             final Spotlight model = mSpotlights.get(i);
@@ -152,7 +153,7 @@ public class SpotlightView extends FrameLayout {
                 model.setListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(mIsAnimation)return;
+                        if (mIsAnimation) return;
                         Animator begin = nextModel.getShowAnimator();
                         begin.addListener(new AnimatorListenerAdapter() {
                             @Override
@@ -180,7 +181,7 @@ public class SpotlightView extends FrameLayout {
                 model.setListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(mIsAnimation)return;
+                        if (mIsAnimation) return;
                         Animator animator = model.getHideAnimator();
                         animator.addListener(new AnimatorListenerAdapter() {
                             @Override
@@ -200,6 +201,9 @@ public class SpotlightView extends FrameLayout {
     }
 
     public void start() {
+        if (!mIsPrepare) {
+            prepare();
+        }
         ViewGroup.LayoutParams guideParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         final ViewGroup contentView = (ViewGroup) mActivity.getWindow().getDecorView();
@@ -461,6 +465,7 @@ public class SpotlightView extends FrameLayout {
                 super.onAnimationStart(animation);
                 mIsAnimation = true;
             }
+
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);

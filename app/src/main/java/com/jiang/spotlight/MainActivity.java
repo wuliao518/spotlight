@@ -82,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
                 .setRadius(10)
                 .build(3);
 
-
         findViewById(R.id.start).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                spotlightView.prepare();
                 spotlightView.start();
             }
         }, 500);
