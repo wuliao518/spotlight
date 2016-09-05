@@ -1,11 +1,12 @@
 # spotlight
+
 模仿Gecco[https://github.com/yukiasai/Gecco]
 #ScreeShot
-==
+
 ![](/art/demo.gif)
 
 #Usages
-==
+
 ```java
 final SpotlightView spotlightView = new SpotlightView(getApplication());
 TextView oneText = new TextView(getApplication());
@@ -80,5 +81,5 @@ new Handler().postDelayed(new Runnable() {
 ```
 
 #License
-==
+
 No License
