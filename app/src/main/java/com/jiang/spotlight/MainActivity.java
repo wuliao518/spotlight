@@ -27,10 +27,6 @@ public class MainActivity extends AppCompatActivity {
         oneText.setTextSize(16);
         oneText.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
 
-
-        //1、自定义动画
-        //2、控制遮罩层Mask移动
-        //3、动画期间不允许点击
         spotlightView.addGuideView(MainActivity.this, imageShare)
                 .setShowView(oneText)
                 .setDirection(SpotlightView.BOTTOM | SpotlightView.LEFT)

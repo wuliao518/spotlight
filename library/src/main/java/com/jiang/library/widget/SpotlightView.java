@@ -125,7 +125,7 @@ public class SpotlightView extends FrameLayout {
         int size = mSpotlights.size();
         for (int i = 0; i < size; i++) {
             final Spotlight model = mSpotlights.get(i);
-            if (model.getShowAnimator() == null) {//没有开始动画,一般是第一个
+            if (model.getShowAnimator() == null) {
                 ValueAnimator showAnimator = getShowAnimator(model);
                 mCurrentRadius = model.getRadius();
                 model.setShowAnimator(showAnimator);
@@ -188,7 +188,7 @@ public class SpotlightView extends FrameLayout {
                             public void onAnimationEnd(Animator animation) {
                                 super.onAnimationEnd(animation);
                                 removeAllViews();
-                                clearGuide();
+                                clearSpotlight();
                             }
                         });
                         animator.start();
@@ -196,8 +196,6 @@ public class SpotlightView extends FrameLayout {
                 });
             }
         }
-
-
     }
 
     public void start() {
@@ -227,7 +225,7 @@ public class SpotlightView extends FrameLayout {
         begin.start();
     }
 
-    public void clearGuide() {
+    public void clearSpotlight() {
         if (mActivity != null) {
             final ViewGroup contentView = (ViewGroup) mActivity.getWindow().getDecorView();
             contentView.removeView(SpotlightView.this);
@@ -363,7 +361,6 @@ public class SpotlightView extends FrameLayout {
 
         /**
          * make showView move vertical
-         *
          * @param topMargin
          * @return
          */

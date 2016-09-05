@@ -1,6 +1,5 @@
 package com.jiang.library.utils;
 
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -30,14 +29,9 @@ public class DisplayUtil {
         int childMeasureWidth = ViewGroup.getChildMeasureSpec(0, 0, lp.width);
         int childMeasureHeight;
         if (lp.height > 0) {
-            childMeasureHeight = View.MeasureSpec.makeMeasureSpec(lp.height, View.MeasureSpec.EXACTLY);//适合、匹配
+            childMeasureHeight = View.MeasureSpec.makeMeasureSpec(lp.height, View.MeasureSpec.EXACTLY);
         } else {
-            childMeasureHeight = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);//未指定
-        }
-        if (view == null) {
-            Log.e("jiang",".......");
-        }else{
-            Log.e("jiang","123456");
+            childMeasureHeight = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         }
         view.measure(childMeasureWidth, childMeasureHeight);
         return view.getMeasuredHeight();
@@ -53,13 +47,13 @@ public class DisplayUtil {
         int childMeasureWidth = ViewGroup.getChildMeasureSpec(0, 0, lp.width);
         int childMeasureHeight;
         if (lp.height > 0) {
-            childMeasureHeight = View.MeasureSpec.makeMeasureSpec(lp.height, View.MeasureSpec.EXACTLY);//适合、匹配
+            childMeasureHeight = View.MeasureSpec.makeMeasureSpec(lp.height, View.MeasureSpec.EXACTLY);
         } else {
-            childMeasureHeight = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);//未指定
+            childMeasureHeight = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         }
         view.measure(childMeasureWidth, childMeasureHeight);
         return view.getMeasuredWidth();
     }
 
-
 }
+
